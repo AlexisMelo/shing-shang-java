@@ -66,11 +66,13 @@ public class Joueur implements Serializable
 
 	/**
 	 * 
-	 * @param booleanASautee
+	 * @param booleanASauteeP
 	 * true si le bushi a déjà effectué un saut
+	 * @param bushiP
+	 * Le bushi impacté par l'action
 	 * @return renvoie l'action choisie par le joueur
 	 */
-	public Actions choisitAction(boolean booleanASauteeP)
+	public Actions choisitAction(boolean booleanASauteeP, Bushi bushiP)
 	{
 		String stringChoix;
 		
@@ -79,20 +81,29 @@ public class Joueur implements Serializable
 		
 		if(booleanASauteeP)
 		{
-			System.out.println("f) Fin\ns) Saute\ne) Enregistrer/Sauvegarder");
+			System.out.println("f) Fin\ns) Saute\n");
 			do
 			{
 				stringChoix = sc.nextLine().toLowerCase();
-			}while(!stringChoix.equals("f") && !stringChoix.equals("s") && !stringChoix.equals("e"));
+			}while(!stringChoix.equals("f") && !stringChoix.equals("s"));
 		}
-		else
+		else if(bushiP.getTypeBushi() == TypeBushi.Dragon)
 		{
-			System.out.println("g) Glisse\ns) Saute\na) Annule\ne) Enregistrer/Sauvegarder");
+			System.out.println("s) Saute\na) Annule\n");
 			do
 			{
 				stringChoix = sc.nextLine().toLowerCase();
 				System.out.println(stringChoix);
-			}while(!stringChoix.equals("g") && !stringChoix.equals("s") && !stringChoix.equals("a") && !stringChoix.equals("e"));
+			}while(!stringChoix.equals("s") && !stringChoix.equals("a"));
+		}
+		else
+		{
+			System.out.println("g) Glisse\ns) Saute\na) Annule\n");
+			do
+			{
+				stringChoix = sc.nextLine().toLowerCase();
+				System.out.println(stringChoix);
+			}while(!stringChoix.equals("g") && !stringChoix.equals("s") && !stringChoix.equals("a"));
 		}
 		
 		System.out.println(Actions.getAction(stringChoix));
@@ -293,7 +304,7 @@ public class Joueur implements Serializable
 	
 	/**
 	 * 
-	 * @param Nouveau nom du joueur
+	 * @param nom Nouveau nom du joueur
 	 */
 	public void setNom(String nom)
 	{

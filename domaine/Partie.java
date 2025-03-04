@@ -36,6 +36,8 @@ public class Partie implements Serializable
 	 * Le deuxième joueur2P
 	 * @param plateauPlateauP
 	 * Le plateau de la partie
+	 * @param save
+	 * Nom de la sauvegarde
 	 */
 	public Partie(int JoueurDebute, Joueur joueur1P, Joueur joueur2P, Plateau plateauPlateauP, String save) 
 	{
@@ -46,6 +48,7 @@ public class Partie implements Serializable
 		nomSave = save;
 		plateauPlateauP.poseArmee(joueur1P.getArmee());
 		plateauPlateauP.poseArmee(joueur2P.getArmee());
+		plateauPlateau.setPartie(this);
 	}
 
 	/**
@@ -112,7 +115,7 @@ public class Partie implements Serializable
 					
 				}
 				
-				actionChoisie = joueurTestP.choisitAction(booleanASaute);
+				actionChoisie = joueurTestP.choisitAction(booleanASaute, bushiSelectionne);
 				
 				if(actionChoisie != Actions.FIN && actionChoisie != Actions.ANNULE && 
 						!(actionChoisie == Actions.GLISSE && bushiSelectionne.getTypeBushi().getSymbole() == "D"))
@@ -300,11 +303,21 @@ public class Partie implements Serializable
 	
 	/**
 	 * 
-	 * @param nouveau joueur courant
+	 * @param joueur nouveau joueur courant
 	 */
 	public void setJoueurCourant(int joueur)
 	{
 		intJoueurCourant = joueur;
+	}
+	
+	public Joueur getJoueur1()
+	{
+		return joueur1;
+	}
+	
+	public Joueur getJoueur2()
+	{
+		return joueur2;
 	}
 	
 	public String toString()

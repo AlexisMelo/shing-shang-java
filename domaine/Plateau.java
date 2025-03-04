@@ -17,6 +17,7 @@ public class Plateau implements Serializable
 	private static final long serialVersionUID = -2578988039188777085L;
 	private Case caseCourante;
 	private Case[][] casePlateau;
+	private Partie partie;
 	
 	/**
 	 * Créer un plateau de cases
@@ -61,9 +62,17 @@ public class Plateau implements Serializable
         {
             System.out.print(i + "  ");
         }
+        
+        System.out.print("\nX");
+        if(partie.getJoueur1().getCouleur() == Couleur.ROUGE)
+        {
+        	System.out.print("               " + partie.getJoueur1().getNom().substring(0, 4) + "\n");
+        }
+        else
+        {
+        	System.out.print("               " + partie.getJoueur2().getNom().substring(0, 4) + "\n");
+        }
 
-        System.out.println("");
-        System.out.println("X");
         for(int i = 0; i < 10; i++)
         {
             System.out.print(i + "   ");
@@ -81,6 +90,14 @@ public class Plateau implements Serializable
 
             }
             System.out.println("");
+        }
+        if(partie.getJoueur2().getCouleur() == Couleur.ROUGE)
+        {
+        	System.out.print("                " + partie.getJoueur1().getNom().substring(0, 4) + "\n");
+        }
+        else
+        {
+        	System.out.print("                " + partie.getJoueur2().getNom().substring(0, 4) + "\n");
         }
 
     }
@@ -279,6 +296,11 @@ public class Plateau implements Serializable
 	public void setCaseCourante(Case caseCouranteP)
 	{
 		caseCourante = caseCouranteP;
+	}
+	
+	public void setPartie(Partie partieP)
+	{
+		partie = partieP;
 	}
 	
 	

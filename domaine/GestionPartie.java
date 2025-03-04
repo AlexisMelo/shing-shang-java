@@ -28,6 +28,7 @@ public class GestionPartie
 	/**
 	 * Lancement du jeu
 	 * @throws FileNotFoundException
+	 * Fichier non trouvé
 	 */
 	public GestionPartie() throws FileNotFoundException
 	{
@@ -119,7 +120,7 @@ public class GestionPartie
 		{
 			System.out.println("\nNom du joueur : \n( Moins de 15 caractères )");
 			stringNom = sc.nextLine();
-		}while(stringNom.length() > 15 || stringNom.length() < 0);
+		}while(stringNom.length() > 15 || stringNom.length() <= 0);
 		
 		if(couleurPremierJoueurP  != null)
 		{
@@ -175,6 +176,7 @@ public class GestionPartie
 	/**
 	 * Affiche les règles du jeu
 	 * @throws FileNotFoundException
+	 * Fichier non trouvé
 	 */
 	public void AfficherRegles() throws FileNotFoundException
 	{
@@ -253,6 +255,7 @@ public class GestionPartie
 	
 	/**
 	 * Upload d'une sauvegarde
+	 * @return la partie chargé
 	 */
 	public Partie chargerPartie()
 	{
