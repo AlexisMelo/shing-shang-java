@@ -1,19 +1,23 @@
 package domaine;
 
+/**
+ *
+ * @author Alexis Melo da Silva, Valentin Bossard
+ *
+ */
 public class Portail extends Case
 {
 
   private Couleur couleurMaCouleur;
 
   /**
-   * Créé un portail
    * 
    * @param intXP
-   * Coordonnée x
+   * Coordonnée X
    * @param intYP
-   * Coordonné y
+   * Coordonnée Y
    * @param couleurMaCouleurP
-   * La couleur du portail
+   * Couleur du portail
    */
   public Portail(int intXP, int intYP, Couleur couleurMaCouleurP) 
   {
@@ -23,7 +27,7 @@ public class Portail extends Case
   
   /**
    * 
-   * @return Renvoie la couleur du portail
+   * @return couleur du portail
    */
   public Couleur getCouleur()
   {

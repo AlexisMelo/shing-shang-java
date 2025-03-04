@@ -1,18 +1,29 @@
 package domaine;
 
-public abstract class Case 
+import java.io.Serializable;
+
+/**
+ * 
+ * @author Alexis Melo da Silva, Valentin Bossard
+ *
+ */
+public abstract class Case implements Serializable
 {
 
-  private int intX, intY;
+  /**
+	 * 
+	 */
+	private static final long serialVersionUID = -7987414353577478532L;
+private int intX, intY;
   private Bushi bushiBushi;
   
   /**
-   * Créé une case
+   * Permet de créer une case
    * 
    * @param intXP
    * Coordonnée x
    * @param intYP
-   * Coordonné y
+   * Coordonnée y
    */
   public Case(int intXP, int intYP)
   {
@@ -22,25 +33,7 @@ public abstract class Case
 
   /**
    * 
-   * @return Renvoie le bushi présent sur la case
-   */
-  public Bushi getBushi()
-  {
-	  return bushiBushi;
-  }
-  
-  /**
-   * @param bushiBushiP
-   * Définit le bushi sur cette case
-   */
-  public void setBushi(Bushi bushiBushiP)
-  {
-	  bushiBushi = bushiBushiP;
-  }
-  
-  /**
-   * 
-   * @return Renvoie la coordonnée x
+   * @return Coordonnée X
    */
   public int getX()
   {
@@ -48,18 +41,8 @@ public abstract class Case
   }
   
   /**
-   * Définit la coordonnée x
-   * @param intXP
-   * x
-   */
-  public void setX(int intXP)
-  {
-	  intX = intXP;
-  }
-  
-  /**
    * 
-   * @return Renvoie la coordonnée y
+   * @return Coordonnée Y
    */
   public int getY()
   {
@@ -67,9 +50,29 @@ public abstract class Case
   }
   
   /**
-   * Définit la coordonnée y
+   * 
+   * @return Renvoi le bushi contenu dans la case
+   */
+  public Bushi getBushi()
+  {
+	  return bushiBushi;
+  }
+  
+  /**
+   * 
+   * @param intXP
+   * Nouvelle coordonnée X
+   */
+  public void setX(int intXP)
+  {
+	  intX = intXP;
+  }
+  
+  
+  /**
+   * 
    * @param intYP
-   * y
+   * Nouvelle coordonnées Y
    */
   public void setY(int intYP)
   {
@@ -77,21 +80,23 @@ public abstract class Case
   }
   
   /**
-   * Définit les coordonnées x et y
-   * @param intXP
-   * x
-   * @param intYP
-   * y
+   * 
+   * @param bushiBushiP
+   * Bushi à insérer dans la case
    */
-  public void setXY(int intXP, int intYP)
+  public void setBushi(Bushi bushiBushiP)
   {
-	  intX = intXP;
-	  intY = intYP;
+	  bushiBushi = bushiBushiP;
   }
+  
   
   /**
    * 
-   * @return Renvoie le symbole du pion, renvoie un point si aucun pion n'est sur cette case
+   * @return
+   * Retourne le symbole de la case
+   * Egal à "." par défaut
+   * Egal au glyphe du Bushi contenu dans la case si elle n'est pas vide
+   * Egal à "p" ou "P" si la case est un portail
    */
   public String getGlyphe()
   {

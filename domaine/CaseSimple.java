@@ -1,18 +1,23 @@
 package domaine;
 
+/**
+ * 
+ * @author Alexis Melo da Silva, Valentin Bossard
+ *
+ */
 public class CaseSimple extends Case 
 {
+
 	/**
-	 * Créé une case pour un bushi
 	 * 
 	 * @param intXP
-	 * 		Coordonnée x
+	 * Coordonnée X
 	 * @param intYP
-	 * 		Coordonnée y
+	 * Coordonnée Y
 	 */
-	public CaseSimple(int intXP, int intYP) 
-	{
-		super(intXP, intYP);
-	}
+  public CaseSimple(int intXP, int intYP) 
+  {
+	  super(intXP, intYP);
+  }
 
 }

@@ -1,20 +1,29 @@
  package domaine;
 
-import java.util.ArrayList;
-import java.util.InputMismatchException;
-import java.util.LinkedList;
-import java.util.Scanner;
-
-/**
- * 
- * 
- *
- */
-public class Joueur 
+ import java.io.Serializable;
+ import java.util.InputMismatchException;
+ import java.util.LinkedList;
+ import java.util.Scanner;
+ 
+ /**
+  * 
+  * @author Alexis Melo da Silva, Valentin Bossard
+  *
+  */
+public class Joueur implements Serializable
 {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -71602216997182264L;
 	private LinkedList<Bushi> linkedlistArmee;
 	private String stringNom;
+	private Couleur couleurJoueur;
+	
+	private int intNbTour = 0;
+	private int intNbSaut = 0;
+	private int intNbShingShang = 0;
 	
 	/**
 	 * Créer un joueur
@@ -25,6 +34,7 @@ public class Joueur
 	 */
 	public Joueur(Couleur couleurCouleurP, String stringNomP)
 	{
+		couleurJoueur = couleurCouleurP;
 		linkedlistArmee = new LinkedList<Bushi>();
 		this.stringNom = stringNomP;
 		
@@ -46,6 +56,179 @@ public class Joueur
 	
 	/**
 	 * 
+	 * @param bushiPerduP
+	 * bushi à supprimer de la liste
+	 */
+	public void perdBushi(Bushi bushiPerduP)
+	{
+		linkedlistArmee.remove(bushiPerduP);
+	}
+
+	/**
+	 * 
+	 * @param booleanASautee
+	 * true si le bushi a déjà effectué un saut
+	 * @return renvoie l'action choisie par le joueur
+	 */
+	public Actions choisitAction(boolean booleanASauteeP)
+	{
+		String stringChoix;
+		
+		Scanner sc = new Scanner(System.in);
+		System.out.println(stringNom + " : Choisissez une action\n");
+		
+		if(booleanASauteeP)
+		{
+			System.out.println("f) Fin\ns) Saute\ne) Enregistrer/Sauvegarder");
+			do
+			{
+				stringChoix = sc.nextLine().toLowerCase();
+			}while(!stringChoix.equals("f") && !stringChoix.equals("s") && !stringChoix.equals("e"));
+		}
+		else
+		{
+			System.out.println("g) Glisse\ns) Saute\na) Annule\ne) Enregistrer/Sauvegarder");
+			do
+			{
+				stringChoix = sc.nextLine().toLowerCase();
+				System.out.println(stringChoix);
+			}while(!stringChoix.equals("g") && !stringChoix.equals("s") && !stringChoix.equals("a") && !stringChoix.equals("e"));
+		}
+		
+		System.out.println(Actions.getAction(stringChoix));
+		return Actions.getAction(stringChoix);
+	}
+	
+	/**
+	 * 
+	 * @param plateauPlateauP
+	 * Plateau actuel
+	 * @return Renvoie le bushi choisi par le joueur
+	 */
+	public Bushi choisitBushi(Plateau plateauPlateauP)
+	{
+		
+		Scanner sc = new Scanner(System.in);
+		int intX = -1,intY = -1;
+		
+		do
+		{
+
+			System.out.println("\nà " + stringNom + " de jouer !");
+			System.out.println("\nCoordonnées du Bushi à déplacer : ");
+			System.out.print("x: ");
+			do
+			{
+				try 
+				{
+					intX = sc.nextInt();
+				}
+				catch(InputMismatchException e)
+				{
+					System.out.println("Veuillez entrer un chiffre !");
+					System.out.print("x: ");
+					sc.nextLine();
+				}
+				
+			}while(intX == -1);
+			
+			
+			System.out.print("y: ");
+			do
+			{
+				try 
+				{
+					intY = sc.nextInt();
+				}
+				catch(InputMismatchException e)
+				{
+					System.out.println("Veuillez entrer un chiffre !");
+					System.out.print("y: ");
+					sc.nextLine();
+				}
+				
+			}while(intY == -1);
+				
+		}while(intX < 0 
+				|| intX > 9 
+				|| intY < 0 
+				|| intY > 9
+				|| !linkedlistArmee.contains(plateauPlateauP.getBushi(plateauPlateauP.getCasePlateau(intX,intY))));
+		
+		return plateauPlateauP.getBushi(plateauPlateauP.getCasePlateau(intX,intY));
+	}
+	
+	/**
+	 * 
+	 * @return Renvoie la direction choisie par le joueur
+	 */
+	public Direction choisitDirection()
+	{
+		Direction directionFinale=null;
+		String stringDirection;
+		
+		Scanner sc = new Scanner(System.in);
+		System.out.println(stringNom + " : Choisissez la direction\n");
+		System.out.println("H  - en Haut \n"
+				+ "HD - en Haut à Droite \n"
+				+ "D  - à  Droite \n"
+				+ "BD - en Bas à Droite \n"
+				+ "B  - en Bas \n"
+				+ "BG - en Bas à Gauche \n"
+				+ "G  - à  Gauche \n"
+				+ "HG - en Haut à Gauche");
+		do
+		{
+			stringDirection = sc.nextLine().toLowerCase();
+		}while((directionFinale = Direction.getDirection(stringDirection)) == null);
+			
+		return directionFinale;
+	}
+
+	/**
+	 * 
+	 * @return Renvoie la distance choisie par le joueur
+	 */
+	public int choisitDistance()
+	{
+        Scanner sc = new Scanner(System.in);
+        System.out.println(stringNom + " : Veuillez saisir une distance :");
+        int intLongueur = -1;
+        
+        do
+		{
+			try 
+			{
+				intLongueur = sc.nextInt();
+			}
+			catch(InputMismatchException e)
+			{
+				System.out.println("Veuillez saisir un chiffre !");
+				sc.nextLine();
+			}
+			
+		}while(intLongueur == -1);
+        
+        return intLongueur;
+    }
+
+	public void incrementerNbTour()
+	{
+		intNbTour++;
+	}
+	
+	public void incrementerNbSaut()
+	{
+		intNbSaut++;
+	}
+	
+	public void incrementerNbShingShang()
+	{
+		intNbShingShang++;
+	}
+	
+	/**
+	 * 
 	 * @return Renvoie la liste de bushi
 	 */
 	public LinkedList<Bushi> getArmee()
@@ -63,228 +246,64 @@ public class Joueur
 	}
 	
 	/**
+	 * 
+	 * @return Renvoie la couleur du joueur
+	 */
+	public Couleur getCouleur()
+	{
+		return this.couleurJoueur;
+	}
+	
+	/**
+	 * 
+	 * @return Renvoie le nombre de tours joués par le joueur
+	 */
+	public int getNbTour()
+	{
+		return intNbTour;
+	}
+	
+	/**
+	 * 
+	 * @return Renvoie le nombre de sauts effectués par le joueur
+	 */
+	public int getNbSaut()
+	{
+		return intNbSaut;
+	}
+	
+	/**
+	 * 
+	 * @return Renvoie le nombre de ShingShang effectués par le joueur
+	 */
+	public int getNbShingShang()
+	{
+		return intNbShingShang;
+	}
+	
+	/**
 	 * Remplace la liste de bushi du joueur
 	 * @param linkedlistArmeeP
 	 * La liste de bushi
 	 */
-	public void remplaceArmee(LinkedList<Bushi> linkedlistArmeeP)
+	public void setArmee(LinkedList<Bushi> linkedlistArmeeP)
 	{
 		this.linkedlistArmee = linkedlistArmeeP;
 	}
 	
 	/**
 	 * 
-	 * @param bushiPerduP
-	 * bushi a supprimer de la liste
+	 * @param Nouveau nom du joueur
 	 */
-	public void perdBushi(Bushi bushiPerduP)
+	public void setNom(String nom)
 	{
-		linkedlistArmee.remove(bushiPerduP);
+		stringNom = nom;
 	}
-
-	/**
-	 * 
-	 * @param booleanASautee
-	 * true si le bushi a déjà effectuer un saut
-	 * @return renvoie l'action choisit par le joueur
-	 */
-	public Actions choisitAction(boolean booleanASautee)
-	{
-		Actions actionFinale = null;
-		
-		Scanner sc = new Scanner(System.in);
-		
-		System.out.println(stringNom + " : Choisissez une action\n");
-		int intChoix;
-		
-		if(booleanASautee)
-		{
-			System.out.println("1) Fin\n3) Saute");
-			do
-			{
-				intChoix = sc.nextInt();
-			}while(intChoix != 1 && intChoix != 3);
-			
-		}
-		else
-		{
-			System.out.println("2) Glisse\n3) Saute\n4) Annule");
-			do
-			{
-				intChoix = sc.nextInt();
-			}while(intChoix!= 2 && intChoix!= 3 && intChoix!= 4);
-		}
-		
-		switch (intChoix)
-		{
-			case 1: 
-				actionFinale = Actions.FIN;
-				break;
-			case 2:
-				actionFinale = Actions.GLISSE;
-				break;
-			case 3:
-				actionFinale = Actions.SAUTE;
-				break;
-			case 4:
-				actionFinale = Actions.ANNULE;
-				break;
-			default: actionFinale = null;
-			break;
-		}
-		
-		return actionFinale;
-	}
-	
-	/**
-	 * 
-	 * @param plateauPlateauP
-	 * Plateau actuel
-	 * @return Renvoie le bushi choisit par le joueur
-	 */
-	public Bushi choisitBushi(Plateau plateauPlateauP)
-	{
-		
-		Scanner sc = new Scanner(System.in);
-		int intX = -1, intY = -1;
-		
-		do
-		{
-			System.out.println(stringNom + " : Entrez les coordonnées du bushi");
-			
-			System.out.print("x: ");
-			do
-			{
-				try 
-				{
-					intX = sc.nextInt();
-				}
-				catch(InputMismatchException e)
-				{
-					System.out.println("Veuillez entrez un chiffre !");
-					System.out.print("x: ");
-					sc.nextLine();
-				}
-				
-			}while(intX == -1);
-			
-			
-			System.out.print("y: ");
-			do
-			{
-				try 
-				{
-					intY = sc.nextInt();
-				}
-				catch(InputMismatchException e)
-				{
-					System.out.println("Veuillez entrez un chiffre !");
-					System.out.print("y: ");
-					sc.nextLine();
-				}
-				
-			}while(intY == -1);
-			
-		}while(intX < 0 
-				|| intX > 9 
-				|| intY < 0 
-				|| intY > 9
-				|| !linkedlistArmee.contains(plateauPlateauP.getBushi(plateauPlateauP.getCasePlateau(intX,intY))));
-		
-		return plateauPlateauP.getBushi(plateauPlateauP.getCasePlateau(intX,intY));
-	}
-	
-	/**
-	 * 
-	 * @return Renvoie la direction choisit par le joueur
-	 */
-	public Direction choisitDirection()
-	{
-		Direction directionFinale=null;
-		ArrayList<String> arraylistSaisie = new ArrayList<String>();
-		String stringDirection;
-		
-		remplirListeSaisieDirection(arraylistSaisie);
-		Scanner sc = new Scanner(System.in);
-		System.out.println(stringNom + " : Choisissez la direction\n");
-		System.out.println("H  - en Haut \n"
-				+ "HD - en Haut à Droite \n"
-				+ "D  - à  Droite \n"
-				+ "BD - en Bas à Droite \n"
-				+ "B  - en Bas \n"
-				+ "BG - en Bas à Gauche \n"
-				+ "G  - à  Gauche \n"
-				+ "HG - en Haut à Gauche");
-		do
-		{
-			stringDirection = sc.nextLine().toLowerCase();
-		}while(!arraylistSaisie.contains(stringDirection));
-			
-		switch (stringDirection)
-		{
-			case "h": 
-				directionFinale = Direction.H;
-				break;
-			case "hd":
-				directionFinale = Direction.HD;
-				break;
-			case "d":
-				directionFinale = Direction.D;
-				break;
-			case "bd":
-				directionFinale = Direction.BD;
-				break;
-			case "b":
-				directionFinale = Direction.B;
-				break;
-			case "bg":
-				directionFinale = Direction.BG;
-				break;
-			case "g":
-				directionFinale = Direction.G;
-				break;
-			case "hg":
-				directionFinale = Direction.HG;
-				break;
-			default: directionFinale = null;
-			break;
-		}
-		return directionFinale;
-	}
-
-	/**
-	 * 
-	 * @param l
-	 * Liste des abréviation de direction
-	 */
-	public void remplirListeSaisieDirection(ArrayList<String> l)
-	{
-		l.add("h");
-		l.add("hd");
-		l.add("d");
-		l.add("bd");
-		l.add("b");
-		l.add("bg");
-		l.add("g");
-		l.add("hg");
-	}
-
-	/**
-	 * 
-	 * @return Renvoie la distance choisit par le joueur
-	 */
-	public int choisitDistance()
-	{
-        Scanner sc = new Scanner(System.in);
-        System.out.println(stringNom + " : Veuillez saisir une distance :");
-        int intLongueur = sc.nextInt();
-        return intLongueur;
-    }
-
 	
 	public String toString()
 	{
 		return ("\nNom du joueur : " + stringNom
+				+"\nCouleur armée : " + couleurJoueur
 				+"\nSon armée : \n" + linkedlistArmee.toString());
 	}
 }

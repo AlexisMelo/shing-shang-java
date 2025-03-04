@@ -1,17 +1,28 @@
 package domaine;
 
-public class Bushi
+import java.io.Serializable;
+
+/**
+ * 
+ * @author Alexis Melo da Silva, Valentin Bossard
+ *
+ */
+public class Bushi implements Serializable
 {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7513025696163525330L;
 	private TypeBushi typebushiMonType;
 	private Couleur couleurMaCouleur;
 	private int intIndex;
 
 	/**
-	 * Créé un bushi
+	 * Créer un bushi
 	 * 
 	 * @param typebushiTypeP
-	 * Le type de bushi
+	 * Le type du bushi
 	 * @param couleurCouleurP
 	 * La couleur du bushi
 	 * @param intIndexP
@@ -26,36 +37,9 @@ public class Bushi
 
 	/**
 	 * 
-	 * @return Renvoie la couleur du bushi
-	 */
-	public Couleur getCouleur()
-	{
-		return couleurMaCouleur;
-	}
-	
-	/**
-	 * 
-	 * @return Renvoie le type du bushi
-	 */
-	public TypeBushi getTypeBushi()
-	{
-		return typebushiMonType;
-	}
-	
-	/**
-	 * 
-	 * @return Renvoie le symbole du bushi
-	 */
-	public String getGlyphe()
-	{
-		return typebushiMonType.getSymbole();
-	}
-
-	/**
-	 * 
 	 * @param bushiBushiP
-	 * Le bushi a comparer
-	 * @return Renvoie true si le bushi est plus grand que le bushi placer en paramètre
+	 * Le bushi à comparer
+	 * @return Renvoie true si le bushi est plus grand que le bushi placé en paramètre
 	 */
 	public boolean estPlusGrandOuEgalA(Bushi bushiBushiP) 
 	{
@@ -66,11 +50,11 @@ public class Bushi
 	/**
 	 * 
 	 * @param plateauPlateau
-	 * Le plateau actuelle
+	 * Le plateau actuel
 	 * @param casePositionP
 	 * La case ayant le bushi que l'on veut déplacer
 	 * @param directionVersP
-	 * La direction vers laquelle ont veux déplacer le bushi
+	 * La direction vers laquelle on veut déplacer le bushi
 	 * @param intDistanceP
 	 * La distance de déplacement
 	 */
@@ -97,30 +81,29 @@ public class Bushi
 	/**
 	 * 
 	 * @param plateauPlateau
-	 * Le plateau actuelle
+	 * Le plateau actuel
 	 * @param casePositionP
 	 * La case ayant le bushi que l'on veut déplacer
 	 * @param directionVersP
-	 * La direction vers laquelle ont veux déplacer le bushi
+	 * La direction vers laquelle on veut déplacer le bushi
 	 * 
-	 * @return Renvoie le bushi sauter
+	 * @return Renvoie le bushi sauté
 	 */
 	public Bushi saute(Plateau plateauPlateau, Case casePositionP, Direction directionVersP) 
 	{
 		plateauPlateau.setCaseCourante(casePositionP);
 		plateauPlateau.deplaceBushi(plateauPlateau.voisine(plateauPlateau.voisine(casePositionP, directionVersP), directionVersP));
-		// plateauPlateauP.marqueAEffacer(plateauPlateauP.voisine(casePositionP, directionVersP));
 		return plateauPlateau.voisine(casePositionP, directionVersP).getBushi();
 	}
 
 	/**
 	 * 
 	 * @param plateauPlateau
-	 * Le plateau actuelle
+	 * Le plateau actuel
 	 * @param casePositionP
 	 * La case ayant le bushi que l'on veut déplacer
 	 * @param directionVersP
-	 * La direction vers laquelle ont veux déplacer le bushi
+	 * La direction vers laquelle on veut déplacer le bushi
 	 * @param intDistanceP
 	 * La distance de déplacement
 	 * 
@@ -152,11 +135,11 @@ public class Bushi
 	/**
 	 * 
 	 * @param plateauPlateauP
-	 * Le plateau actuelle
+	 * Le plateau actuel
 	 * @param casePositionP
 	 * La case ayant le bushi que l'on veut déplacer
 	 * @param directionVersP
-	 * La direction vers laquelle ont veux déplacer le bushi
+	 * La direction vers laquelle on veut déplacer le bushi
 	 * @param casePositionPPrecedent
 	 * La case du tour précédent
 	 * 
@@ -189,7 +172,7 @@ public class Bushi
 	 * @param intDistanceP
 	 * La distance de déplacement
 	 * 
-	 * @return Renvoie true si la distance est correct
+	 * @return Renvoie true si la distance est correcte
 	 */
 	public boolean verifDistance(int intDistanceP) 
 	{
@@ -205,6 +188,33 @@ public class Bushi
 		return false;
 	}
 	
+	/**
+	 * 
+	 * @return Renvoie la couleur du bushi
+	 */
+	public Couleur getCouleur()
+	{
+		return couleurMaCouleur;
+	}
+	
+	/**
+	 * 
+	 * @return Renvoie le type du bushi
+	 */
+	public TypeBushi getTypeBushi()
+	{
+		return typebushiMonType;
+	}
+	
+	/**
+	 * 
+	 * @return Renvoie le symbole du bushi
+	 */
+	public String getGlyphe()
+	{
+		return typebushiMonType.getSymbole();
+	}
+
 	public String toString()
 	{
 		return ("\nType du bushi : " + typebushiMonType.getNom() 
@@ -212,4 +222,21 @@ public class Bushi
 				+"\nIndex : " + intIndex );
 	} 
 	
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Bushi other = (Bushi) obj;
+		if (couleurMaCouleur != other.couleurMaCouleur)
+			return false;
+		if (intIndex != other.intIndex)
+			return false;
+		if (typebushiMonType != other.typebushiMonType)
+			return false;
+		return true;
+	}
 }

@@ -1,20 +1,25 @@
 package domaine;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 
-public class Plateau
+/**
+ * 
+ * @author Alexis Melo da Silva, Valentin Bossard
+ *
+ */
+public class Plateau implements Serializable
 {
+	
 	/**
-	 * @see Case
+	 * 
 	 */
+	private static final long serialVersionUID = -2578988039188777085L;
 	private Case caseCourante;
-	/**
-	 * @see Case
-	 */
 	private Case[][] casePlateau;
 	
 	/**
-	 * Créé un plateau de cases
+	 * Créer un plateau de cases
 	 */
 	public Plateau() 
 	{
@@ -43,38 +48,6 @@ public class Plateau
 				
 			}
 		}
-	}
-	
-	/**
-	 * 
-	 * @return Renvoie la case courante
-	 */
-	public Case getCaseCourante() 
-	{
-		return caseCourante;
-	}	
-
-	/**
-	 * 
-	 * @param intXP
-	 * Coordonnée x
-	 * @param intYP
-	 * Coordonnée y
-	 * @return Renvoie la case ayant les coordonnée passer en paramètre
-	 */
-	public Case getCasePlateau(int intXP, int intYP)
-	{
-		return casePlateau[intXP][intYP];
-	}
-	
-	/**
-	 * Définit la nouvelle case courante
-	 * @param caseCouranteP
-	 * Case courante
-	 */
-	public void setCaseCourante(Case caseCouranteP)
-	{
-		caseCourante = caseCouranteP;
 	}
 	
 	/**
@@ -115,10 +88,10 @@ public class Plateau
 	/**
 	 * 
 	 * @param caseAncienneP
-	 * Case ayant le bushi actuelle
+	 * Case ayant le bushi actuel
 	 * @param directionVoisineP
 	 * Direction que doit prendre le bushi
-	 * @return Renvoie la case d'arriver
+	 * @return Renvoie la case d'arrivée
 	 */
 	public Case voisine(Case caseAncienneP, Direction directionVoisineP) 
 	{
@@ -137,10 +110,10 @@ public class Plateau
 	/**
 	 * 
 	 * @param caseAncienneP
-	 * Case ayant le bushi actuelle
+	 * Case ayant le bushi actuel
 	 * @param directionVoisineP
 	 * Direction que doit prendre le bushi
-	 * @return Renvoie le portail d'arriver
+	 * @return Renvoie le portail d'arrivée
 	 */
 	public Portail voisinePortail(Case caseAncienneP, Direction directionVoisineP) 
 	{
@@ -159,7 +132,7 @@ public class Plateau
 	/**
 	 * Vérifie si la case contient un bushi
 	 * @param caseTesteeP
-	 * Case a tester
+	 * Case à tester
 	 * @return Renvoie true si la case ne contient pas de bushi
 	 */
 	public boolean estVide(Case caseTesteeP) 
@@ -167,11 +140,11 @@ public class Plateau
 		return (caseTesteeP != null 
 				&& casePlateau[caseTesteeP.getX()][caseTesteeP.getY()].getBushi() == null);
 	}
-
+	
 	/**
-	 * Déplace lu bushi
+	 * Déplace le bushi 
 	 * @param caseNouvelleP
-	 * Case ayant le bushi a deplacer
+	 * Case ayant le bushi à deplacer
 	 */
 	public void deplaceBushi(Case caseNouvelleP) 
 	{
@@ -182,8 +155,8 @@ public class Plateau
 	/**
 	 * 
 	 * @param caseChoisieP
-	 * Case possèdent le bushi
-	 * @return Renvoie le bushi
+	 * Case possedant le bushi
+	 * @return Renvoi le bushi
 	 */
 	public Bushi getBushi(Case caseChoisieP) 
 	{
@@ -200,8 +173,8 @@ public class Plateau
 	/**
 	 * 
 	 * @param bushiChercheP
-	 * Un bushi
-	 * @return Renvoie la case où se trouve le bushi
+	 * Le bushi que l'on cherche
+	 * @return Renvoi la case où se trouve le bushi
 	 */
 	public Case getCase(Bushi bushiChercheP) 
 	{
@@ -220,11 +193,11 @@ public class Plateau
 		
 		return null;
 	}
-
+	
 	/**
 	 * Supprime un bushi
 	 * @param caseEffaceP
-	 * Case ayant le bushi a supprimer
+	 * Case ayant le bushi à supprimer
 	 */
 	public void marqueAEffacer(Case caseEffaceP) 
 	{
@@ -232,7 +205,7 @@ public class Plateau
 	}
 		
 	/**
-	 * Place les bushi d'un joueur sur le plateau
+	 * Place les bushis d'un joueur sur le plateau
 	 * @param linkedlistArmee
 	 * liste de bushi
 	 */
@@ -274,6 +247,40 @@ public class Plateau
 		}
 		
 	}
+	
+	/**
+	 * 
+	 * @return la case courante
+	 */
+	public Case getCaseCourante() 
+	{
+		return caseCourante;
+	}	
+
+	/**
+	 * Permet de retrouver une case du plateau à partir de ses coordonnées
+	 * @param intXP
+	 * Coordonnée X de la case
+	 * @param intYP
+	 * Coordonnée Y de la case
+	 * @return case correspondante aux coordonnées
+	 * 
+	 */
+	public Case getCasePlateau(int intXP, int intYP)
+	{
+		return casePlateau[intXP][intYP];
+	}
+	
+	/**
+	 * 
+	 * @param caseCouranteP
+	 * Nouvelle case courante
+	 */
+	public void setCaseCourante(Case caseCouranteP)
+	{
+		caseCourante = caseCouranteP;
+	}
+	
 	
 	public String toString()
 	{

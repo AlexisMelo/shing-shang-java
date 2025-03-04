@@ -1,7 +1,7 @@
 package domaine;
 /**
- * Liste des directions possibles et des coordonnées correspondantes
- * 
+ *  Alexis Melo da Silva, Valentin Bossard
+ * Liste les directions possibles pour un Bushi
  *
  */
 public enum Direction {
@@ -46,9 +46,9 @@ public enum Direction {
 	/**
 	 * 
 	 * @param intXP
-	 * Coordonnée x
+	 * Coordonée X
 	 * @param intYP
-	 * Coordonnée y
+	 * Coordonnée Y
 	 * @param stringNomDirectionP
 	 * Nom de la direction
 	 * @param stringAbreviationP
@@ -62,8 +62,27 @@ public enum Direction {
 	}
 	
 	/**
+	 * Permet de transformer une abréviation issue de la saisie utilisateur en un objet de type Direction
+	 * @param stringAbreviationP
+	 * Abréviation de la direction à retourner
+	 * @return Renvoi la direction correspondante à l'abréviation
+	 */
+	public static Direction getDirection(String stringAbreviationP)
+	{
+		if (stringAbreviationP.equals("h")) return Direction.H;
+		if (stringAbreviationP.equals("b")) return Direction.B;
+		if (stringAbreviationP.equals("d")) return Direction.D;
+		if (stringAbreviationP.equals("g")) return Direction.G;
+		if (stringAbreviationP.equals("hd")) return Direction.HD;
+		if (stringAbreviationP.equals("hg")) return Direction.HG;
+		if (stringAbreviationP.equals("bd")) return Direction.BD;
+		if (stringAbreviationP.equals("bg")) return Direction.BG;
+		return null;
+	}
+	
+	/**
 	 * 
-	 * @return Renvoie la coordonnée x
+	 * @return Coordonnée X
 	 */
 	public int getX()
 	{
@@ -72,7 +91,7 @@ public enum Direction {
 	
 	/**
 	 * 
-	 * @return Renvoie la coordonnée y
+	 * @return Coordonnée Y
 	 */
 	public int getY()
 	{

@@ -2,8 +2,8 @@ package domaine;
 
 /**
  * 
- * Liste les différents type de bushi ainsi que leur puissance et leur déplacement max
- *
+ * @author Alexis Melo da Silva, Valentin Bossard
+ * Liste des types de bushi existants
  */
 enum TypeBushi 
 {
@@ -20,13 +20,13 @@ enum TypeBushi
   /**
    * 
    * @param stringSymboleP
-   * Symbole du bushi
+   * Symbole du type de bushi
    * @param intTailleP
-   * Puissance du bushi
+   * Taille ( puissance ) du type de Bushi
    * @param intDeplacementMaxP
-   * Déplacement max du bushi
+   * Nombre de cases jusqu'où le type de bushi peut se déplacer
    * @param stringNomP
-   * Nom du bushi
+   * Nom du type de Bushi
    */
   private TypeBushi(String stringSymboleP, int intTailleP, int intDeplacementMaxP, String stringNomP)
   {
@@ -38,7 +38,7 @@ enum TypeBushi
 
   /**
    * 
-   * @return Renvoie le symbole du bushi
+   * @return Glyphe du type
    */
   public String getSymbole()
   {
@@ -47,7 +47,7 @@ enum TypeBushi
 
   /**
    * 
-   * @return Renvoie la puissance du bushi
+   * @return Puissance du type
    */
   public int getTaille()
   {
@@ -56,7 +56,7 @@ enum TypeBushi
   
   /**
    * 
-   * @return Renvoie le nom du bushi
+   * @return Nom du type
    */
   public String getNom()
   {
@@ -65,7 +65,7 @@ enum TypeBushi
   
   /**
    * 
-   * @return Renvoie le déplacement maximum du bushi
+   * @return Distance maximale de glissage du type
    */
   public int getDeplacementMax()
   {

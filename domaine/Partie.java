@@ -1,38 +1,35 @@
 package domaine;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+import java.util.Vector;
+
 /**
  * 
- * 
+ * @author Alexis Melo da Silva, Valentin Bossard
  *
  */
-public class Partie 
+public class Partie implements Serializable
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2653945650741951888L;
 	private int intJoueurCourant;
 	private Joueur joueur1;
 	private Joueur joueur2;
 	private Plateau plateauPlateau;
+	private String nomSave;
 
 	/**
-	 * Créé une partie
+	 * Permet de créer une partie
 	 * 
-	 * @param joueur1P
-	 * Le premier joueur1P
-	 * @param joueur2P
-	 * Le deuxième joueur2P
-	 */
-	public Partie(Joueur joueur1P, Joueur joueur2P)
-	{
-		intJoueurCourant = 1;
-		joueur1 = joueur1P;
-		joueur2 = joueur2P;
-		plateauPlateau = new Plateau();
-		plateauPlateau.poseArmee(joueur1.getArmee());
-		plateauPlateau.poseArmee(joueur2.getArmee());
-	}
-
-	/**
-	 * Créé une partie
-	 * 
+	 * @param JoueurDebute
+	 * Le numéro du joueur qui est censé debuter la partie
 	 * @param joueur1P
 	 * Le premier joueur1P
 	 * @param joueur2P
@@ -40,12 +37,13 @@ public class Partie
 	 * @param plateauPlateauP
 	 * Le plateau de la partie
 	 */
-	public Partie(Joueur joueur1P, Joueur joueur2P, Plateau plateauPlateauP) 
+	public Partie(int JoueurDebute, Joueur joueur1P, Joueur joueur2P, Plateau plateauPlateauP, String save) 
 	{
-		intJoueurCourant = 1;
+		intJoueurCourant = JoueurDebute;
 		joueur1 = joueur1P;
 		joueur2 = joueur2P;
 		this.plateauPlateau  = plateauPlateauP;
+		nomSave = save;
 		plateauPlateauP.poseArmee(joueur1P.getArmee());
 		plateauPlateauP.poseArmee(joueur2P.getArmee());
 	}
@@ -67,13 +65,13 @@ public class Partie
 			}
 		}while(!estPartieTermine());
 		
-		System.out.println("Bravo " + estGagnant().getNom() + " tu as gagné !");
+		supprimeSauvegarde();
+		affichageVictoire();
 		
 	}
 	
 	/**
-	 * Effectue le tour d'un joueur
-	 * 
+	 * Effectue le tour d'un joueur 
 	 * @param joueurTestP
 	 * Le joueur jouant le tour
 	 */
@@ -117,7 +115,7 @@ public class Partie
 				actionChoisie = joueurTestP.choisitAction(booleanASaute);
 				
 				if(actionChoisie != Actions.FIN && actionChoisie != Actions.ANNULE && 
-					!(actionChoisie == Actions.GLISSE && bushiSelectionne.getTypeBushi().getSymbole() == "D"))
+						!(actionChoisie == Actions.GLISSE && bushiSelectionne.getTypeBushi().getSymbole() == "D"))
 				{
 					directionChoisie = joueurTestP.choisitDirection();
 				}
@@ -134,6 +132,7 @@ public class Partie
 						{
 							plateauPlateau .marqueAEffacer(plateauPlateau .getCase(bushiSaute));
 							booleanAMange = true;
+							joueurTestP.incrementerNbShingShang();
 						}
 						
 						booleanASaute = true;
@@ -167,10 +166,14 @@ public class Partie
 					{
 						System.out.println("Déplacement impossible !");
 					}
-					
 				}
 				
 			}while(actionChoisie == Actions.ANNULE);
+			
+			if(booleanASaute && actionChoisie != Actions.GLISSE)
+			{
+				joueurTestP.incrementerNbSaut();
+			}
 			
 			if(estPartieTermine())
 			{
@@ -179,8 +182,40 @@ public class Partie
 			
 		}while(actionChoisie != Actions.FIN);
 		
-		changerJoueur();
+		joueurTestP.incrementerNbTour();
+		changerJoueur();	
+		sauvegarde();
+	}
+	
+	/**
+	 * Sauvegarde la partie 
+	 *
+	 */
+	public void sauvegarde()
+	{
+		try 
+		{
+			ObjectOutputStream fichierW = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream("save/" + nomSave)));
+			Vector<Partie> lesPartie = new Vector<Partie>();
+			lesPartie.add(this);
+			fichierW.writeObject(lesPartie);
+			fichierW.close();
+		} 
+		catch (IOException e) 
+		{
+			e.printStackTrace();
+		}
 		
+		System.out.println("--- Partie sauvegardée ! ---");
+	}
+	
+	/**
+	 * Suppression du fichier de sauvegarde
+	 */
+	public void supprimeSauvegarde()
+	{
+		File fichier = new File("save/" + nomSave);
+		fichier.delete();
 	}
 	
 	/**
@@ -199,9 +234,9 @@ public class Partie
 	}
 
 	/**
-	 * Vérifie si la partie est terminer
+	 * Vérifie si la partie est terminée
 	 * 
-	 * @return Renvoie true si la partie est terminer
+	 * @return Renvoie true si la partie est terminée
 	 */
 	public boolean estPartieTermine() 
 	{
@@ -215,7 +250,7 @@ public class Partie
 
 	/**
 	 * 
-	 * @return Renvoie le joueur ayant gagner la partie, retourne null si la partie n'est pas finie
+	 * @return Renvoie le joueur ayant gagné la partie, retourne null si la partie n'est pas finie
 	 */
 	public Joueur estGagnant() 
 	{
@@ -236,11 +271,49 @@ public class Partie
 		return null;
 	}
 	
+	/**
+	 * Affiche le gagnant ainsi que des informations sur la partie qui vient de se terminer et sur les
+	 * performances des joueurs
+	 */
+	public void affichageVictoire()
+	{
+		int intNbTourTotal = joueur1.getNbTour() + joueur2.getNbTour();
+		int intNbShingShangTotal = joueur1.getNbShingShang() + joueur2.getNbShingShang();
+		int intNbSautTotal = joueur1.getNbSaut() + joueur2.getNbSaut();
+		
+		System.out.println("\n" + estGagnant().getNom() + " remporte la partie !");
+		System.out.println("\n--- Statistiques de la partie ---"
+				+ "\nNombre de tours      : " + intNbTourTotal
+				+ "\nNombre de sauts      : " + intNbSautTotal
+				+ "\nNombre de ShingShang : " + intNbShingShangTotal);
+		
+		System.out.println("\n--- Statistiques de " + joueur1.getNom() + " ---"
+				+ "\nNombre de tours      : " + joueur1.getNbTour()
+				+ "\nNombre de sauts      : " + joueur1.getNbSaut()
+				+ "\nNombre de ShingShang : " + joueur1.getNbShingShang());
+		
+		System.out.println("\n--- Statistiques de " + joueur2.getNom() + " ---"
+				+ "\nNombre de tours      : " + joueur2.getNbTour()
+				+ "\nNombre de sauts      : " + joueur2.getNbSaut()
+				+ "\nNombre de ShingShang : " + joueur2.getNbShingShang());
+	}
+	
+	/**
+	 * 
+	 * @param nouveau joueur courant
+	 */
+	public void setJoueurCourant(int joueur)
+	{
+		intJoueurCourant = joueur;
+	}
+	
 	public String toString()
 	{
 		return ("\nJoueur 1 : " + joueur1.getNom()
 				+"\nJoueur 2 : " + joueur2.getNom()
 				+"\nEntrain de jouer : Joueur " + intJoueurCourant);
 	}
+	
+	
 
 }

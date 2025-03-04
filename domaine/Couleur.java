@@ -1,6 +1,7 @@
 package domaine;
 /**
- * Liste des couleurs
+ * @author Alexis Melo da Silva, Valentin Bossard
+ * Liste des couleurs possibles pour un joueur 
  */
 public enum Couleur 
 {
@@ -12,20 +13,43 @@ public enum Couleur
 	/**
 	 * 
 	 * @param stringNomP
-	 * La couleur
+	 * Nom de la couleur
 	 */
 	private Couleur(String stringNomP)
 	{
 		stringNom = stringNomP;
 	}
 
-	public char glyphe(char charGlyphe){
-		return charGlyphe;
+	/**
+	 * Permet de transformer une abréviation issue de la saisie utilisateur en un objet de type Couleur
+	 * @param stringAbreviationP
+	 * Abréviation de la couleur à retourner
+	 * @return Renvoi la couleur correspondante à l'abréviation
+	 */
+	public static Couleur getCouleur(String stringAbreviationP)
+	{
+		if(stringAbreviationP.equals("n")) return Couleur.NOIR;
+		if(stringAbreviationP.equals("r")) return Couleur.ROUGE;
+		return null;
 	}
 	
 	/**
+	 * Utile pour la création des joueurs et éviter de redemander la couleur du 2eme joueur
+	 * Méthode à modifier en cas d'extension du projet avec d'autres couleurs
+	 * @param couleurPremiereP
+	 * Abréviation de la couleur que l'on ne souhaite pas récuperer
+	 * @return Si 2 couleurs différentes, retourne la couleur ne correspondant pas à l'abréviation
+	 */
+	public static Couleur getCouleurInverse(Couleur couleurPremiereP)
+	{
+		if(couleurPremiereP.equals(Couleur.NOIR)) return Couleur.ROUGE;
+		if(couleurPremiereP.equals(Couleur.ROUGE)) return Couleur.NOIR;
+		return null;
+	}
+
+	/**
 	 * 
-	 * @return renvoie le nom de la couleur
+	 * @return Nom de la couleur
 	 */
 	public String getNom()
 	{
