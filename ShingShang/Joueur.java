@@ -53,16 +53,6 @@ public class Joueur implements Serializable
 			linkedlistArmee.add(new Bushi(TypeBushi.Singe, couleurCouleurP, i));
 		}		
 	}
-	
-	/**
-	 * 
-	 * @param bushiPerduP
-	 * bushi à supprimer de la liste
-	 */
-	public void perdBushi(Bushi bushiPerduP)
-	{
-		linkedlistArmee.remove(bushiPerduP);
-	}
 
 	/**
 	 * 
@@ -72,7 +62,7 @@ public class Joueur implements Serializable
 	 * Le bushi impacté par l'action
 	 * @return renvoie l'action choisie par le joueur
 	 */
-	public Actions choisitAction(boolean booleanASauteeP, Bushi bushiP)
+	public Actions choisirAction(boolean booleanASauteeP, Bushi bushiP)
 	{
 		String stringChoix;
 		
@@ -116,7 +106,7 @@ public class Joueur implements Serializable
 	 * Plateau actuel
 	 * @return Renvoie le bushi choisi par le joueur
 	 */
-	public Bushi choisitBushi(Plateau plateauPlateauP)
+	public Bushi choisirBushi(Plateau plateauPlateauP)
 	{
 		
 		Scanner sc = new Scanner(System.in);
@@ -173,7 +163,7 @@ public class Joueur implements Serializable
 	 * 
 	 * @return Renvoie la direction choisie par le joueur
 	 */
-	public Direction choisitDirection()
+	public Direction choisirDirection()
 	{
 		Direction directionFinale=null;
 		String stringDirection;
@@ -200,7 +190,7 @@ public class Joueur implements Serializable
 	 * 
 	 * @return Renvoie la distance choisie par le joueur
 	 */
-	public int choisitDistance()
+	public int choisirDistance()
 	{
         Scanner sc = new Scanner(System.in);
         System.out.println(stringNom + " : Veuillez saisir une distance :");
@@ -223,16 +213,25 @@ public class Joueur implements Serializable
         return intLongueur;
     }
 
+	/**
+	 * Incrémente le nombre de tour joués
+	 */
 	public void incrementerNbTour()
 	{
 		intNbTour++;
 	}
 	
+	/**
+	 * Incrémente le nombre de sauts effectués
+	 */
 	public void incrementerNbSaut()
 	{
 		intNbSaut++;
 	}
 	
+	/**
+	 * Incrémente le nombre de ShingShang effectués
+	 */
 	public void incrementerNbShingShang()
 	{
 		intNbShingShang++;
@@ -240,7 +239,7 @@ public class Joueur implements Serializable
 	
 	/**
 	 * 
-	 * @return Renvoie la liste de bushi
+	 * @return Renvoie les bushis possédés par le joueur
 	 */
 	public LinkedList<Bushi> getArmee()
 	{
@@ -304,11 +303,11 @@ public class Joueur implements Serializable
 	
 	/**
 	 * 
-	 * @param nom Nouveau nom du joueur
+	 * @param stringNomP Nouveau nom du joueur
 	 */
-	public void setNom(String nom)
+	public void setNom(String stringNomP)
 	{
-		stringNom = nom;
+		stringNom = stringNomP;
 	}
 	
 	public String toString()

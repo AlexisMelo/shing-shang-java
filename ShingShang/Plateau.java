@@ -20,7 +20,7 @@ public class Plateau implements Serializable
 	private Partie partie;
 	
 	/**
-	 * Créer un plateau de cases
+	 * Permet de créer un plateau de cases
 	 */
 	public Plateau() 
 	{
@@ -54,7 +54,7 @@ public class Plateau implements Serializable
 	/**
 	 * Affiche le plateau
 	 */
-	public void afficher() 
+	public void afficherPlateau() 
     {
         System.out.print("  Y ");
         
@@ -66,11 +66,25 @@ public class Plateau implements Serializable
         System.out.print("\nX");
         if(partie.getJoueur1().getCouleur() == Couleur.ROUGE)
         {
-        	System.out.print("               " + partie.getJoueur1().getNom().substring(0, 4) + "\n");
+        	if(partie.getJoueur1().getNom().length() > 4)
+        	{
+        		System.out.print("               " + partie.getJoueur1().getNom().substring(0, 4) + "\n");
+        	}
+        	else
+        	{
+        		System.out.print("               " + partie.getJoueur1().getNom() + "\n");
+        	}
         }
         else
         {
-        	System.out.print("               " + partie.getJoueur2().getNom().substring(0, 4) + "\n");
+        	if(partie.getJoueur2().getNom().length() > 4)
+        	{
+        		System.out.print("               " + partie.getJoueur2().getNom().substring(0, 4) + "\n");
+        	}
+        	else
+        	{
+        		System.out.print("               " + partie.getJoueur2().getNom() + "\n");
+        	}
         }
 
         for(int i = 0; i < 10; i++)
@@ -93,11 +107,25 @@ public class Plateau implements Serializable
         }
         if(partie.getJoueur2().getCouleur() == Couleur.ROUGE)
         {
-        	System.out.print("                " + partie.getJoueur1().getNom().substring(0, 4) + "\n");
+        	if(partie.getJoueur1().getNom().length() > 4)
+        	{
+        		System.out.print("                " + partie.getJoueur1().getNom().substring(0, 4) + "\n");
+        	}
+        	else
+        	{
+        		System.out.print("                " + partie.getJoueur1().getNom() + "\n");
+        	}
         }
         else
         {
-        	System.out.print("                " + partie.getJoueur2().getNom().substring(0, 4) + "\n");
+        	if(partie.getJoueur2().getNom().length() > 4)
+        	{
+        		System.out.print("               " + partie.getJoueur2().getNom().substring(0, 4) + "\n");
+        	}
+        	else
+        	{
+        		System.out.print("               " + partie.getJoueur2().getNom() + "\n");
+        	}
         }
 
     }
@@ -163,7 +191,7 @@ public class Plateau implements Serializable
 	 * @param caseNouvelleP
 	 * Case ayant le bushi à deplacer
 	 */
-	public void deplaceBushi(Case caseNouvelleP) 
+	public void deplacerBushi(Case caseNouvelleP) 
 	{
 		caseNouvelleP.setBushi(getCaseCourante().getBushi());
 		marqueAEffacer(getCaseCourante());
@@ -226,7 +254,7 @@ public class Plateau implements Serializable
 	 * @param linkedlistArmee
 	 * liste de bushi
 	 */
-	public void poseArmee(LinkedList<Bushi> linkedlistArmee)
+	public void poserArmee(LinkedList<Bushi> linkedlistArmee)
 	{
 		if(linkedlistArmee.get(0).getCouleur() == Couleur.ROUGE)
 		{
@@ -298,6 +326,10 @@ public class Plateau implements Serializable
 		caseCourante = caseCouranteP;
 	}
 	
+	/**
+	 * Change la partie auquel correspond le plateau
+	 * @param partieP Nouvelle partie
+	 */
 	public void setPartie(Partie partieP)
 	{
 		partie = partieP;

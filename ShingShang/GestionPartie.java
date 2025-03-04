@@ -36,7 +36,7 @@ public class GestionPartie
 		
 		do
 		{
-			actionsmenuEnCours = choixActionsMenu();
+			actionsmenuEnCours = choisirActionsMenu();
 
 			if (actionsmenuEnCours.equals(ActionsMenu.NOUVELLE))
 			{
@@ -81,7 +81,7 @@ public class GestionPartie
 	 * Deuxième joueur
 	 * @return Le numéro du joueur qui doit effectuer le premier tour
 	 */
-	public int choixPremierJoueur(Joueur joueur1P, Joueur Joueur2P)
+	public int choisirPremierJoueur(Joueur joueur1P, Joueur Joueur2P)
 	{
 		Random random = new Random();
 		Scanner sc = new Scanner(System.in);
@@ -110,7 +110,7 @@ public class GestionPartie
 	 * Couleur du joueur créé précedemment
 	 * @return Nouveau joueur
 	 */
-	public Joueur creationJoueur(Couleur couleurPremierJoueurP)
+	public Joueur creerJoueur(Couleur couleurPremierJoueurP)
 	{
 		Scanner sc = new Scanner(System.in);
 		String stringNom;
@@ -143,16 +143,16 @@ public class GestionPartie
 	 */
 	public Partie nouvellePartie()
 	{
-		Joueur joueur1 = creationJoueur(null);
-		Joueur joueur2 = creationJoueur(joueur1.getCouleur());
-		return new Partie(choixPremierJoueur(joueur1,joueur2),joueur1,joueur2, new Plateau(), joueur1.getNom() + "_" + joueur2.getNom());
+		Joueur joueur1 = creerJoueur(null);
+		Joueur joueur2 = creerJoueur(joueur1.getCouleur());
+		return new Partie(choisirPremierJoueur(joueur1,joueur2),joueur1,joueur2, new Plateau(), joueur1.getNom() + "_" + joueur2.getNom());
 	}
 	
 	/*
 	 * Permet de choisir une action du menu
 	 * @return Action choisie
 	 */
-	public ActionsMenu choixActionsMenu()
+	public ActionsMenu choisirActionsMenu()
 	{
 		Scanner sc = new Scanner(System.in);
 		String stringChoix;
@@ -182,16 +182,16 @@ public class GestionPartie
 	{
 		BufferedReader br = null;
 		FileReader fr = null;			
-		String sCurrentLine;
+		String stringLigneCourante;
 		
 		try 
 		{
 			fr = new FileReader(getClass().getResource("/domaine/Regles").getFile());		
 			br = new BufferedReader(fr);
 
-			while ((sCurrentLine = br.readLine()) != null) 
+			while ((stringLigneCourante = br.readLine()) != null) 
 			{
-				System.out.println(sCurrentLine);
+				System.out.println(stringLigneCourante);
 			}
 		} 
 		catch (IOException e) 
@@ -228,12 +228,12 @@ public class GestionPartie
 		System.out.println("");
 	}
 	
-	public String choixFichier()
+	public String choisirFichier()
 	{
 		String [] listeFichiers;
 		File fichier1 = new File("save/");
 		listeFichiers = fichier1.list();
-		int numeroFichier = -1;
+		int intNumeroFichier = -1;
 		
 		Scanner sc = new Scanner(System.in);
 		do
@@ -241,16 +241,16 @@ public class GestionPartie
 			System.out.println("Veuillez entrez l'identifiant du fichier");
 			try 
 			{
-				numeroFichier = sc.nextInt();
+				intNumeroFichier = sc.nextInt();
 			}
 			catch(InputMismatchException e)
 			{
 				System.out.println("Veuillez saisir un chiffre !");
 				sc.nextLine();
 			}
-		}while(numeroFichier == -1 || numeroFichier >= listeFichiers.length);
+		}while(intNumeroFichier == -1 || intNumeroFichier >= listeFichiers.length);
 		
-		return listeFichiers[numeroFichier];
+		return listeFichiers[intNumeroFichier];
 	}
 	
 	/**
@@ -266,7 +266,7 @@ public class GestionPartie
 			System.out.println("Choisissez le fichier de sauvegarde à charger : ");
 			afficheIdentifiantListeFichiers();
 			
-			File fichier = new File("save/" + choixFichier());
+			File fichier = new File("save/" + choisirFichier());
 			
 			if(fichier.exists())
 			{
@@ -298,7 +298,7 @@ public class GestionPartie
 		{
 			System.out.println("Choisissez le fichier de sauvegarde à supprimer : ");
 			afficheIdentifiantListeFichiers();
-			File fichier = new File("save/" + choixFichier());
+			File fichier = new File("save/" + choisirFichier());
 			fichier.delete();
 		}
 		else

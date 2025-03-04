@@ -28,7 +28,7 @@ public class Partie implements Serializable
 	/**
 	 * Permet de créer une partie
 	 * 
-	 * @param JoueurDebute
+	 * @param JoueurDebuteP
 	 * Le numéro du joueur qui est censé debuter la partie
 	 * @param joueur1P
 	 * Le premier joueur1P
@@ -36,18 +36,18 @@ public class Partie implements Serializable
 	 * Le deuxième joueur2P
 	 * @param plateauPlateauP
 	 * Le plateau de la partie
-	 * @param save
+	 * @param stringSaveP
 	 * Nom de la sauvegarde
 	 */
-	public Partie(int JoueurDebute, Joueur joueur1P, Joueur joueur2P, Plateau plateauPlateauP, String save) 
+	public Partie(int JoueurDebuteP, Joueur joueur1P, Joueur joueur2P, Plateau plateauPlateauP, String stringSaveP) 
 	{
-		intJoueurCourant = JoueurDebute;
+		intJoueurCourant = JoueurDebuteP;
 		joueur1 = joueur1P;
 		joueur2 = joueur2P;
 		this.plateauPlateau  = plateauPlateauP;
-		nomSave = save;
-		plateauPlateauP.poseArmee(joueur1P.getArmee());
-		plateauPlateauP.poseArmee(joueur2P.getArmee());
+		nomSave = stringSaveP;
+		plateauPlateauP.poserArmee(joueur1P.getArmee());
+		plateauPlateauP.poserArmee(joueur2P.getArmee());
 		plateauPlateau.setPartie(this);
 	}
 
@@ -60,15 +60,15 @@ public class Partie implements Serializable
 		{
 			if(intJoueurCourant == 1)
 			{
-				tourValide(joueur1);
+				validerTour(joueur1);
 			}
 			else
 			{
-				tourValide(joueur2);
+				validerTour(joueur2);
 			}
 		}while(!estPartieTermine());
 		
-		supprimeSauvegarde();
+		supprimerSauvegarde();
 		affichageVictoire();
 		
 	}
@@ -78,7 +78,7 @@ public class Partie implements Serializable
 	 * @param joueurTestP
 	 * Le joueur jouant le tour
 	 */
-	public void tourValide(Joueur joueurTestP)
+	public void validerTour(Joueur joueurTestP)
 	{
 		Actions actionChoisie = null;
 		Bushi bushiSelectionne = null;
@@ -93,7 +93,7 @@ public class Partie implements Serializable
 		{
 			do
 			{
-				plateauPlateau .afficher();
+				plateauPlateau .afficherPlateau();
 				
 				if(!booleanASaute || booleanAMange)
 				{
@@ -104,7 +104,7 @@ public class Partie implements Serializable
 					
 					do
 					{
-						bushiSelectionne = joueurTestP.choisitBushi(plateauPlateau);
+						bushiSelectionne = joueurTestP.choisirBushi(plateauPlateau);
 					}while(booleanAMange && casePrecedente == plateauPlateau.getCase(bushiSelectionne));
 					
 					if(booleanAMange)
@@ -115,12 +115,12 @@ public class Partie implements Serializable
 					
 				}
 				
-				actionChoisie = joueurTestP.choisitAction(booleanASaute, bushiSelectionne);
+				actionChoisie = joueurTestP.choisirAction(booleanASaute, bushiSelectionne);
 				
 				if(actionChoisie != Actions.FIN && actionChoisie != Actions.ANNULE && 
 						!(actionChoisie == Actions.GLISSE && bushiSelectionne.getTypeBushi().getSymbole() == "D"))
 				{
-					directionChoisie = joueurTestP.choisitDirection();
+					directionChoisie = joueurTestP.choisirDirection();
 				}
 				
 				if(actionChoisie == Actions.SAUTE)
@@ -152,8 +152,8 @@ public class Partie implements Serializable
 					{
 						do
 						{
-							intDistance = joueurTestP.choisitDistance();
-						}while(!bushiSelectionne.verifDistance(intDistance));
+							intDistance = joueurTestP.choisirDistance();
+						}while(!bushiSelectionne.verifierDistance(intDistance));
 						
 						if(bushiSelectionne.glissePossible(plateauPlateau , plateauPlateau .getCase(bushiSelectionne), directionChoisie, intDistance))
 						{
@@ -187,14 +187,14 @@ public class Partie implements Serializable
 		
 		joueurTestP.incrementerNbTour();
 		changerJoueur();	
-		sauvegarde();
+		sauvegarder();
 	}
 	
 	/**
 	 * Sauvegarde la partie 
 	 *
 	 */
-	public void sauvegarde()
+	public void sauvegarder()
 	{
 		try 
 		{
@@ -215,7 +215,7 @@ public class Partie implements Serializable
 	/**
 	 * Suppression du fichier de sauvegarde
 	 */
-	public void supprimeSauvegarde()
+	public void supprimerSauvegarde()
 	{
 		File fichier = new File("save/" + nomSave);
 		fichier.delete();
@@ -303,18 +303,26 @@ public class Partie implements Serializable
 	
 	/**
 	 * 
-	 * @param joueur nouveau joueur courant
+	 * @param intJoueurP nouveau joueur courant
 	 */
-	public void setJoueurCourant(int joueur)
+	public void setJoueurCourant(int intJoueurP)
 	{
-		intJoueurCourant = joueur;
+		intJoueurCourant = intJoueurP;
 	}
 	
+	/**
+	 * 
+	 * @return Renvoi le premier joueur
+	 */
 	public Joueur getJoueur1()
 	{
 		return joueur1;
 	}
 	
+	/**
+	 * 
+	 * @return Renvoi le second joueur
+	 */
 	public Joueur getJoueur2()
 	{
 		return joueur2;

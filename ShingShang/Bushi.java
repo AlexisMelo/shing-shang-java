@@ -20,7 +20,6 @@ public class Bushi implements Serializable
 
 	/**
 	 * Créer un bushi
-	 * 
 	 * @param typebushiTypeP
 	 * Le type du bushi
 	 * @param couleurCouleurP
@@ -74,13 +73,13 @@ public class Bushi implements Serializable
 		if (plateauPlateau.estVide(caseTemporaire)) 
 		{
 			plateauPlateau.setCaseCourante(casePositionP);
-			plateauPlateau.deplaceBushi(caseTemporaire);
+			plateauPlateau.deplacerBushi(caseTemporaire);
 		}
 	}
 
 	/**
 	 * 
-	 * @param plateauPlateau
+	 * @param plateauPlateauP
 	 * Le plateau actuel
 	 * @param casePositionP
 	 * La case ayant le bushi que l'on veut déplacer
@@ -89,16 +88,16 @@ public class Bushi implements Serializable
 	 * 
 	 * @return Renvoie le bushi sauté
 	 */
-	public Bushi saute(Plateau plateauPlateau, Case casePositionP, Direction directionVersP) 
+	public Bushi saute(Plateau plateauPlateauP, Case casePositionP, Direction directionVersP) 
 	{
-		plateauPlateau.setCaseCourante(casePositionP);
-		plateauPlateau.deplaceBushi(plateauPlateau.voisine(plateauPlateau.voisine(casePositionP, directionVersP), directionVersP));
-		return plateauPlateau.voisine(casePositionP, directionVersP).getBushi();
+		plateauPlateauP.setCaseCourante(casePositionP);
+		plateauPlateauP.deplacerBushi(plateauPlateauP.voisine(plateauPlateauP.voisine(casePositionP, directionVersP), directionVersP));
+		return plateauPlateauP.voisine(casePositionP, directionVersP).getBushi();
 	}
 
 	/**
 	 * 
-	 * @param plateauPlateau
+	 * @param plateauPlateauP
 	 * Le plateau actuel
 	 * @param casePositionP
 	 * La case ayant le bushi que l'on veut déplacer
@@ -109,21 +108,21 @@ public class Bushi implements Serializable
 	 * 
 	 * @return Renvoie true si le glissement est possible
 	 */
-	public boolean glissePossible(Plateau plateauPlateau, Case casePositionP, Direction directionVersP, int intDistanceP) {
+	public boolean glissePossible(Plateau plateauPlateauP, Case casePositionP, Direction directionVersP, int intDistanceP) {
 
 		Case caseTemporaire = null;
 
 		if (intDistanceP == 1)
 		{
-			caseTemporaire = plateauPlateau.voisine(casePositionP, directionVersP);
+			caseTemporaire = plateauPlateauP.voisine(casePositionP, directionVersP);
 		} 
-		else if (plateauPlateau.estVide(plateauPlateau.voisine(casePositionP, directionVersP)) 
-				&& plateauPlateau.voisine(casePositionP, directionVersP).getClass() != Portail.class) 
+		else if (plateauPlateauP.estVide(plateauPlateauP.voisine(casePositionP, directionVersP)) 
+				&& plateauPlateauP.voisine(casePositionP, directionVersP).getClass() != Portail.class) 
 		{
-			caseTemporaire = plateauPlateau.voisine(plateauPlateau.voisine(casePositionP, directionVersP), directionVersP);
+			caseTemporaire = plateauPlateauP.voisine(plateauPlateauP.voisine(casePositionP, directionVersP), directionVersP);
 		}
 
-		if (plateauPlateau.estVide(caseTemporaire) 
+		if (plateauPlateauP.estVide(caseTemporaire) 
 				&& caseTemporaire.getClass() != Portail.class)
 		{
 			return true;
@@ -140,23 +139,23 @@ public class Bushi implements Serializable
 	 * La case ayant le bushi que l'on veut déplacer
 	 * @param directionVersP
 	 * La direction vers laquelle on veut déplacer le bushi
-	 * @param casePositionPPrecedent
+	 * @param casePositionPrecedentP
 	 * La case du tour précédent
 	 * 
 	 * @return Renvoie true si le saut est possible
 	 */
-	public boolean sautPossible(Plateau plateauPlateauP, Case casePositionP, Direction directionVersP, Case casePositionPPrecedent) 
+	public boolean sautPossible(Plateau plateauPlateauP, Case casePositionP, Direction directionVersP, Case casePositionPrecedentP) 
 	{
 		Case caseArrive = plateauPlateauP.voisine(plateauPlateauP.voisine(casePositionP, directionVersP), directionVersP);
 		Portail casePlateau = null;
 
-		if (caseArrive.getClass() == Portail.class) 
+		if (plateauPlateauP.voisine(plateauPlateauP.voisine(casePositionP, directionVersP), directionVersP) != null && caseArrive.getClass() == Portail.class) 
 		{
 			casePlateau = plateauPlateauP.voisinePortail(plateauPlateauP.voisine(casePositionP, directionVersP), directionVersP);
 		}
 
-		if (casePositionP.getBushi().estPlusGrandOuEgalA(plateauPlateauP.voisine(casePositionP, directionVersP).getBushi())
-				&& casePositionPPrecedent != caseArrive
+		if (plateauPlateauP.voisine(plateauPlateauP.voisine(casePositionP, directionVersP), directionVersP) != null && casePositionP.getBushi().estPlusGrandOuEgalA(plateauPlateauP.voisine(casePositionP, directionVersP).getBushi())
+				&& casePositionPrecedentP != caseArrive
 				&& ((caseArrive.getClass() == Portail.class 
 				&& typebushiMonType.getSymbole() == "D"
 				&& couleurMaCouleur != casePlateau.getCouleur()) || caseArrive.getClass() == CaseSimple.class)) 
@@ -174,7 +173,7 @@ public class Bushi implements Serializable
 	 * 
 	 * @return Renvoie true si la distance est correcte
 	 */
-	public boolean verifDistance(int intDistanceP) 
+	public boolean verifierDistance(int intDistanceP) 
 	{
 		if (this.typebushiMonType.getDeplacementMax() >= intDistanceP && intDistanceP >= 1) 
 		{
@@ -223,14 +222,14 @@ public class Bushi implements Serializable
 	} 
 	
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
+	public boolean equals(Object objetP) {
+		if (this == objetP)
 			return true;
-		if (obj == null)
+		if (objetP == null)
 			return false;
-		if (getClass() != obj.getClass())
+		if (getClass() != objetP.getClass())
 			return false;
-		Bushi other = (Bushi) obj;
+		Bushi other = (Bushi) objetP;
 		if (couleurMaCouleur != other.couleurMaCouleur)
 			return false;
 		if (intIndex != other.intIndex)

@@ -9,17 +9,12 @@ import java.io.Serializable;
  */
 public abstract class Case implements Serializable
 {
-
-  /**
-	 * 
-	 */
 	private static final long serialVersionUID = -7987414353577478532L;
-private int intX, intY;
-  private Bushi bushiBushi;
+	private int intX, intY;
+	private Bushi bushiBushi;
   
   /**
    * Permet de créer une case
-   * 
    * @param intXP
    * Coordonnée x
    * @param intYP
